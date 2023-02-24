@@ -14,12 +14,9 @@ import fr.eni.papeterie.bo.Article;
 import fr.eni.papeterie.bo.Ramette;
 import fr.eni.papeterie.bo.Stylo;
 import fr.eni.papeterie.dal.DALException;
+import fr.eni.papeterie.dal.StagiaireDAO;
 
 public class ArticleDAOJdbcImpl {
-	
-	private final static String urldb = Settings.getProperty("url");
-	private final static String user = Settings.getProperty("user");
-	private final static String pwd = Settings.getProperty("password");
 	
 	private final static String TYPE_RAM = "Ramette";
 	private final static String TYPE_STL = "Stylo";
@@ -35,10 +32,8 @@ public class ArticleDAOJdbcImpl {
 		Connection connect = null;
 		try {
 			Class.forName(Settings.getProperty("driverJDBC"));
+			connect = JdbcTools.getConnection();
 			
-			if (connect == null || connect.isClosed()) {
-				connect = DriverManager.getConnection(urldb, user, pwd);
-			}
 		} catch (SQLException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}
