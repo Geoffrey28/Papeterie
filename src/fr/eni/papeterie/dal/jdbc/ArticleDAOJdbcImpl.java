@@ -1,7 +1,5 @@
 package fr.eni.papeterie.dal.jdbc;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,9 +12,9 @@ import fr.eni.papeterie.bo.Article;
 import fr.eni.papeterie.bo.Ramette;
 import fr.eni.papeterie.bo.Stylo;
 import fr.eni.papeterie.dal.DALException;
-import fr.eni.papeterie.dal.StagiaireDAO;
+import fr.eni.papeterie.dal.ArticleDAO;
 
-public class ArticleDAOJdbcImpl {
+public class ArticleDAOJdbcImpl implements ArticleDAO {
 	
 	private final static String TYPE_RAM = "Ramette";
 	private final static String TYPE_STL = "Stylo";
@@ -28,7 +26,7 @@ public class ArticleDAOJdbcImpl {
 	private final static String DELETE = "delete from articles where idArticle=?";
 	
 	
-	public Connection getConnection() throws SQLException {
+	/**public Connection getConnection() throws SQLException {
 		Connection connect = null;
 		try {
 			Class.forName(Settings.getProperty("driverJDBC"));
@@ -38,11 +36,12 @@ public class ArticleDAOJdbcImpl {
 			e.printStackTrace();
 		}
 		return connect;
-	}
+	}*/
 	
+	@Override
 	public void insert(Article article) throws DALException {
 		try {
-			PreparedStatement stmt = getConnection().prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS);
+			PreparedStatement stmt = JdbcTools.getConnection().prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS);
 			setParameter(stmt, article);
 			if (article instanceof Ramette) {
 				stmt.setString(8, TYPE_RAM);
@@ -63,11 +62,11 @@ public class ArticleDAOJdbcImpl {
 		}
 	}
 	
-	
+	@Override
 	public Article selectById(int id) throws DALException {
 		Article art = null;
 		try {
-			PreparedStatement stmt = getConnection().prepareStatement(SELECTBYID);
+			PreparedStatement stmt = JdbcTools.getConnection().prepareStatement(SELECTBYID);
 			stmt.setInt(1, id);
 			try (ResultSet rs = stmt.executeQuery();) {
 				if(rs.next()) {
@@ -81,11 +80,12 @@ public class ArticleDAOJdbcImpl {
 		return art;
 	}
 	
-	public List<Article> selectAll() {
+	@Override
+	public List<Article> selectAll() throws DALException {
 		List<Article> List = new ArrayList<Article>();
 		Article art = null;
 		try {
-			Statement stmt = getConnection().createStatement();
+			Statement stmt = JdbcTools.getConnection().createStatement();
 			try (ResultSet rs = stmt.executeQuery(SELECTALL);) {
 				while(rs.next()) {
 					art = forSelect(rs);
@@ -98,9 +98,10 @@ public class ArticleDAOJdbcImpl {
 		return List;
 	}
 	
+	@Override
 	public void update(Article article) throws DALException {
 		try {
-			PreparedStatement stmt = getConnection().prepareStatement(UPDATE + article.getIdArticle());
+			PreparedStatement stmt = JdbcTools.getConnection().prepareStatement(UPDATE + article.getIdArticle());
 			setParameter(stmt, article);
 			stmt.executeUpdate();
 		} catch (SQLException e) {
@@ -108,9 +109,10 @@ public class ArticleDAOJdbcImpl {
 		}
 	}
 	
-	public void delete(int idArticle) {
+	@Override
+	public void delete(int idArticle) throws DALException {
 		try {
-			PreparedStatement stmt = getConnection().prepareStatement(DELETE);
+			PreparedStatement stmt = JdbcTools.getConnection().prepareStatement(DELETE);
 			stmt.setInt(1, idArticle);
 			stmt.executeUpdate();
 		} catch (SQLException e) {
