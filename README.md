@@ -5,11 +5,8 @@
 ** Mise en place de la base de données **
 
 `
-
 USE PAPETERIE_DB
-
 GO
-
 CREATE TABLE dbo.Articles(
 	idArticle int IDENTITY(1,1) NOT NULL,	
 	reference nchar(10) NOT NULL,
