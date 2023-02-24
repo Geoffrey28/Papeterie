@@ -25,19 +25,6 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 	private final static String UPDATE = "update articles set reference=?, marque=?, designation=?, prixUnitaire=?, qteStock=?,grammage=?,couleur=? where idArticle=";
 	private final static String DELETE = "delete from articles where idArticle=?";
 	
-	
-	/**public Connection getConnection() throws SQLException {
-		Connection connect = null;
-		try {
-			Class.forName(Settings.getProperty("driverJDBC"));
-			connect = JdbcTools.getConnection();
-			
-		} catch (SQLException | ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-		return connect;
-	}*/
-	
 	@Override
 	public void insert(Article article) throws DALException {
 		try {
@@ -51,15 +38,18 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 			}
 			int nbRows = stmt.executeUpdate();
 			if (nbRows == 1) {
-				try (ResultSet rs = stmt.getGeneratedKeys();) {
-					if (rs.next()) {
+				try (ResultSet rs = stmt.getGeneratedKeys()) {
+					if(rs.next()) {
 						article.setIdArticle(rs.getInt(1));
 					}
+				} catch (SQLException e) {
+					e.printStackTrace();
 				}
 			}
 		} catch (SQLException e) {
 			throw new DALException("Insert failed - " + article, e);
 		}
+		
 	}
 	
 	@Override
@@ -68,14 +58,13 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 		try {
 			PreparedStatement stmt = JdbcTools.getConnection().prepareStatement(SELECTBYID);
 			stmt.setInt(1, id);
-			try (ResultSet rs = stmt.executeQuery();) {
+			try (ResultSet rs = stmt.executeQuery()) {
 				if(rs.next()) {
 					art = forSelect(rs);
-				}
+				}	
 			}
-			
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new DALException("Select failed from id - " + id, e);
 		}
 		return art;
 	}
@@ -93,7 +82,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 				}
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new DALException("Select all failed - ", e);
 		}
 		return List;
 	}
@@ -105,7 +94,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 			setParameter(stmt, article);
 			stmt.executeUpdate();
 		} catch (SQLException e) {
-			throw new DALException("Insert failed - " + article, e);
+			throw new DALException("Update failed - " + article, e);
 		}
 	}
 	
@@ -116,7 +105,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 			stmt.setInt(1, idArticle);
 			stmt.executeUpdate();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new DALException("Delete failed from id -" + idArticle, e);
 		}
 	}
 	
