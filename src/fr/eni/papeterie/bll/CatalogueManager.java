@@ -39,7 +39,7 @@ public class CatalogueManager {
 			throw new BLLException("Article déjà existant");
 		}
 		try {
-			validerArticles(article);
+			validerArticle(article);
 			daoArticles.insert(article);
 		} catch (DALException e) {
 			throw new BLLException("Echec de l'ajout - article: " + article, e);
@@ -48,7 +48,7 @@ public class CatalogueManager {
 	
 	public void updateArticle(Article article) throws BLLException {
 		try {
-			validerArticles(article);
+			validerArticle(article);
 			daoArticles.update(article);
 		} catch (DALException e) {
 			throw new BLLException("Echec de la mise a jour - article: " + article, e);
@@ -71,7 +71,7 @@ public class CatalogueManager {
 		}
 	}
 	
-	public void validerArticles(Article art) throws BLLException {
+	public void validerArticle(Article art) throws BLLException {
 		boolean validate = true;
 		StringBuffer sb = new StringBuffer();
 		
