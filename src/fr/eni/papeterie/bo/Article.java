@@ -2,7 +2,7 @@ package fr.eni.papeterie.bo;
 
 public abstract class Article {
 	
-	private int idArticle;
+	private Integer idArticle;
 	private String reference;
 	private String marque;
 	private String designation;
@@ -48,7 +48,7 @@ public abstract class Article {
 	/**
 	 * @return the idArticle
 	 */
-	public int getIdArticle() {
+	public Integer getIdArticle() {
 		return idArticle;
 	}
 
@@ -90,7 +90,7 @@ public abstract class Article {
 	/**
 	 * @param idArticle the idArticle to set
 	 */
-	public void setIdArticle(int idArticle) {
+	public void setIdArticle(Integer idArticle) {
 		this.idArticle = idArticle;
 	}
 
