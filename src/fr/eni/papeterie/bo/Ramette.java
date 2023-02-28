@@ -18,7 +18,7 @@ public class Ramette extends Article {
 	 * @param qte
 	 * @param grammage
 	 */
-	public Ramette(int idArticle, String marque, String ref, String designation, float pu, int qte, int grammage) {
+	public Ramette(Integer idArticle, String marque, String ref, String designation, float pu, int qte, int grammage) {
 		super(idArticle, marque, ref, designation, pu, qte);
 		this.grammage = grammage;
 	}
