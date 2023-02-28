@@ -10,7 +10,7 @@ public class PapeterieApp {
 
 			@Override
 			public void run() {
-				EcranArticle frame = new EcranArticle();
+				ArticleController.get().startApp();
 			}
 			
 		});

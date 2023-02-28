@@ -63,11 +63,11 @@ public class CatalogueManager {
 		}
 	}
 	
-	public void removeArticles(int idArticle) throws BLLException {
+	public void removeArticles(Article article) throws BLLException {
 		try {
-			daoArticles.delete(idArticle);
+			daoArticles.delete(article.getIdArticle());
 		} catch (DALException e) {
-			throw new BLLException("Echec de la suppression de l'article avec ID: " + idArticle, e);
+			throw new BLLException("Echec de la suppression de l'article: " + article, e);
 		}
 	}
 	

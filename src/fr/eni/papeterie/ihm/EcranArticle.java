@@ -7,7 +7,6 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
 
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
@@ -22,14 +21,13 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
-import fr.eni.papeterie.bll.BLLException;
-import fr.eni.papeterie.bll.CatalogueManager;
 import fr.eni.papeterie.bo.Article;
 import fr.eni.papeterie.bo.Ramette;
 import fr.eni.papeterie.bo.Stylo;
 
 public class EcranArticle extends JFrame {
-	private static final long serialVersionUID = 1479850413930297379L;
+	
+	private static final long serialVersionUID = 1L;
 	
 	private JTextField txtReference, txtDesignation, txtMarque, txtStock, txtPrix;
 	private JLabel lblReference, lblDesignation, lblMarque, lblStock, lblPrix, lblType, lblGrammage, lblCouleur;
@@ -40,9 +38,6 @@ public class EcranArticle extends JFrame {
 	private JComboBox<String> listCouleur;
 	private String[] couleurs = {"noir", "rouge", "vert", "bleu", "jaune"};
 	
-	private CatalogueManager manager;
-	private List<Article> catalogue;
-	private int indexCatalogue;
 	private Integer indexAfficher;
 
 	public EcranArticle() {
@@ -51,10 +46,8 @@ public class EcranArticle extends JFrame {
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);
-		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		initIHM();
-		initData();
-		afficherPremierArticle();
 	}
 	
 	private void initIHM() {
@@ -122,19 +115,6 @@ public class EcranArticle extends JFrame {
 		
 		// Affecte le panel à l'écran
 		this.setContentPane(panel);
-	}
-
-	/**
-	 * @param data
-	 */
-	private void initData() {
-		try {
-			manager = CatalogueManager.getInstance();
-			catalogue = manager.getCatalogue();
-			indexCatalogue = 0;
-		} catch (BLLException e) {
-			infoErreur(e.getMessage());
-		}
 	}
 	
 	/**
@@ -489,10 +469,7 @@ public class EcranArticle extends JFrame {
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					if (indexCatalogue > 0) {
-						indexCatalogue--;
-						afficherArticle(catalogue.get(indexCatalogue));
-					}
+					ArticleController.get().precedent();
 				}
 			});
 		}
@@ -511,10 +488,7 @@ public class EcranArticle extends JFrame {
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					if (indexCatalogue < catalogue.size() - 1) {
-						indexCatalogue++;
-						afficherArticle(catalogue.get(indexCatalogue));
-					}
+					ArticleController.get().suivant();
 				}
 			});
 		}
@@ -533,8 +507,7 @@ public class EcranArticle extends JFrame {
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					indexCatalogue = catalogue.size();
-					afficherNouveau();
+					ArticleController.get().nouveau();
 				}
 			});
 		}
@@ -553,21 +526,7 @@ public class EcranArticle extends JFrame {
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					Article articleAfficher = getArticle();
-					try {
-						if (articleAfficher.getIdArticle() == null) {
-							manager.addArticle(articleAfficher);
-							System.out.println("Article ajouté :" + articleAfficher);
-							catalogue.add(articleAfficher);
-							information("Nouvel article ajouté");
-						} else {
-							manager.updateArticle(articleAfficher);
-							catalogue.set(indexCatalogue, articleAfficher);
-							information("Mise à jour effectuée");
-						}
-					} catch (BLLException e1) {
-						infoErreur(e1.getMessage());
-					}
+					ArticleController.get().enregistrer();
 				}
 			});
 		}
@@ -586,23 +545,7 @@ public class EcranArticle extends JFrame {
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					try {
-						int id = catalogue.get(indexCatalogue).getIdArticle();
-						manager.removeArticles(id);
-						catalogue.remove(indexCatalogue);
-						information("Suppression de l'article avec succès");
-					} catch (BLLException e2) {
-						infoErreur(e2.getMessage());
-					}
-					
-					if (indexCatalogue < catalogue.size()) {
-						afficherArticle(catalogue.get(indexCatalogue));
-					} else if (indexCatalogue > 0) {
-						indexCatalogue--;
-						afficherArticle(catalogue.get(indexCatalogue));
-					} else {
-						afficherNouveau();
-					}
+					ArticleController.get().supprimer();
 				}
 			});
 		}

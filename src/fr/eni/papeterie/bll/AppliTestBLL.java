@@ -47,7 +47,7 @@ public class AppliTestBLL {
 
 			// Suppression d'un article
 			try {
-				mger.removeArticles(stylo.getIdArticle());
+				mger.removeArticles(stylo);
 				System.out.println(mger.getCatalogue());
 			} catch (BLLException e) {
 				e.printStackTrace();
