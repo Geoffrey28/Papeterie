@@ -43,6 +43,7 @@ public class EcranArticle extends JFrame {
 	private CatalogueManager manager;
 	private List<Article> catalogue;
 	private int indexCatalogue;
+	private Integer indexAfficher;
 
 	public EcranArticle() {
 		this.setTitle("Article");
@@ -384,7 +385,7 @@ public class EcranArticle extends JFrame {
 	 */
 	public void afficherArticle(Article a) {
 		// Récuperer les infos de l'article
-		indexCatalogue = a.getIdArticle();
+		indexAfficher = a.getIdArticle();
 		getTxtReference().setText(a.getReference());
 		getTxtMarque().setText(a.getMarque());
 		getTxtDesignation().setText(a.getDesignation());
@@ -420,8 +421,42 @@ public class EcranArticle extends JFrame {
 		getRdbTypeStylo().setEnabled(a.getIdArticle() == null);
 	}
 	
+	public Article getArticle() {
+		Article article = null;
+		if (getRdbTypeRamette().isSelected()) {
+			article = new Ramette();
+		} else if (getRdbTypeStylo().isSelected()) {
+			article = new Stylo();
+		}
+		try {
+			article.setIdArticle(indexAfficher);
+			article.setReference(getTxtReference().getText());
+			article.setMarque(getTxtMarque().getText());
+			article.setDesignation(getTxtDesignation().getText());
+			article.setPrixUnitaire(Float.parseFloat(getTxtPrix().getText()));
+			article.setQteStock(Integer.parseInt(getTxtStock().getText()));
+			if (getListCouleur().isEnabled()) {
+				((Stylo) article).setCouleur((String) getListCouleur().getSelectedItem());
+			} else if (getCkbGrammage80().isEnabled()) {
+				Ramette r = (Ramette) article;
+				if (getCkbGrammage80().isSelected()) {
+					r.setGrammage(80);
+				} else if (getCkbGrammage100().isSelected()) {
+					r.setGrammage(100);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return article;
+	}
+	
 	public void infoErreur(String msg) {
 		JOptionPane.showMessageDialog(EcranArticle.this, msg, "", JOptionPane.ERROR_MESSAGE);
+	}
+	
+	public void information(String msg) {
+		JOptionPane.showMessageDialog(EcranArticle.this, msg, "", JOptionPane.INFORMATION_MESSAGE);
 	}
 	
 	// GESTION DES INFOS ET DU MENU
@@ -433,11 +468,11 @@ public class EcranArticle extends JFrame {
 		if(panMenu == null) {
 			panMenu = new JPanel();
 			panMenu.setLayout(new FlowLayout());
-			panMenu.add(getPrevious());
-			panMenu.add(getUpdate());
-			panMenu.add(getSave());
-			panMenu.add(getDelete());
-			panMenu.add(getNext());
+			panMenu.add(getPreviousBtn());
+			panMenu.add(getNewBtn());
+			panMenu.add(getSaveBtn());
+			panMenu.add(getDeleteBtn());
+			panMenu.add(getNextBtn());
 		}
 		return panMenu;
 	}
@@ -445,11 +480,21 @@ public class EcranArticle extends JFrame {
 	/**
 	 * @return the previous
 	 */
-	public JButton getPrevious() {
+	public JButton getPreviousBtn() {
 		if(previousBtn == null) {
 			previousBtn = new JButton();
 			ImageIcon icon = new ImageIcon(this.getClass().getResource("resources/Back24.gif"));
 			previousBtn.setIcon(icon);
+			previousBtn.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					if (indexCatalogue > 0) {
+						indexCatalogue--;
+						afficherArticle(catalogue.get(indexCatalogue));
+					}
+				}
+			});
 		}
 		return previousBtn;
 	}
@@ -457,23 +502,41 @@ public class EcranArticle extends JFrame {
 	/**
 	 * @return the next
 	 */
-	public JButton getNext() {
+	public JButton getNextBtn() {
 		if(nextBtn == null) {
 			nextBtn = new JButton();
 			ImageIcon icon = new ImageIcon(this.getClass().getResource("resources/Forward24.gif"));
 			nextBtn.setIcon(icon);
+			nextBtn.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					if (indexCatalogue < catalogue.size() - 1) {
+						indexCatalogue++;
+						afficherArticle(catalogue.get(indexCatalogue));
+					}
+				}
+			});
 		}
 		return nextBtn;
 	}
 
 	/**
-	 * @return the update
+	 * @return the new article button
 	 */
-	public JButton getUpdate() {
+	public JButton getNewBtn() {
 		if(newBtn == null) {
 			newBtn = new JButton();
 			ImageIcon icon = new ImageIcon(this.getClass().getResource("resources/New24.gif"));
 			newBtn.setIcon(icon);
+			newBtn.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					indexCatalogue = catalogue.size();
+					afficherNouveau();
+				}
+			});
 		}
 		return newBtn;
 	}
@@ -481,11 +544,32 @@ public class EcranArticle extends JFrame {
 	/**
 	 * @return the save
 	 */
-	public JButton getSave() {
+	public JButton getSaveBtn() {
 		if(saveBtn == null) {
 			saveBtn = new JButton();
 			ImageIcon icon = new ImageIcon(this.getClass().getResource("resources/Save24.gif"));
 			saveBtn.setIcon(icon);
+			saveBtn.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					Article articleAfficher = getArticle();
+					try {
+						if (articleAfficher.getIdArticle() == null) {
+							manager.addArticle(articleAfficher);
+							System.out.println("Article ajouté :" + articleAfficher);
+							catalogue.add(articleAfficher);
+							information("Nouvel article ajouté");
+						} else {
+							manager.updateArticle(articleAfficher);
+							catalogue.set(indexCatalogue, articleAfficher);
+							information("Mise à jour effectuée");
+						}
+					} catch (BLLException e1) {
+						infoErreur(e1.getMessage());
+					}
+				}
+			});
 		}
 		return saveBtn;
 	}
@@ -493,23 +577,36 @@ public class EcranArticle extends JFrame {
 	/**
 	 * @return the delete
 	 */
-	public JButton getDelete() {
+	public JButton getDeleteBtn() {
 		if(deleteBtn == null) {
 			deleteBtn = new JButton();
 			ImageIcon icon = new ImageIcon(this.getClass().getResource("resources/Delete24.gif"));
 			deleteBtn.setIcon(icon);
+			deleteBtn.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					try {
+						int id = catalogue.get(indexCatalogue).getIdArticle();
+						manager.removeArticles(id);
+						catalogue.remove(indexCatalogue);
+						information("Suppression de l'article avec succès");
+					} catch (BLLException e2) {
+						infoErreur(e2.getMessage());
+					}
+					
+					if (indexCatalogue < catalogue.size()) {
+						afficherArticle(catalogue.get(indexCatalogue));
+					} else if (indexCatalogue > 0) {
+						indexCatalogue--;
+						afficherArticle(catalogue.get(indexCatalogue));
+					} else {
+						afficherNouveau();
+					}
+				}
+			});
 		}
 		return deleteBtn;
-	}
-	
-	public void afficherPremierArticle() {
-		if(catalogue.size() > 0) {
-			indexCatalogue = 0;
-			afficherArticle(catalogue.get(indexCatalogue));
-		} else {
-			indexCatalogue = -1;
-			afficherNouveau();
-		}
 	}
 	
 }

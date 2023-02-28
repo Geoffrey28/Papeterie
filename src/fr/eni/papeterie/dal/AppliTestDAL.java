@@ -48,13 +48,6 @@ public class AppliTestDAL {
 			a1 = articleDAO.selectById(a1.getIdArticle());
 			System.out.println("Article aprés modification  : " + a1.toString());
 
-			// Suppression d'un article
-			System.out.println("\nSuppression de l'article  : " + a1.toString());
-			articleDAO.delete(a1.getIdArticle());
-			articles = articleDAO.selectAll();
-			System.out.println("\nListe des articles après suppression : ");
-			System.out.println(articles);
-
 		} catch (DALException e) {
 			e.printStackTrace();
 		}

@@ -6,7 +6,7 @@ public class Ramette extends Article {
 
 	
 	public Ramette() {
-		super();
+		
 	}
 
 	/**

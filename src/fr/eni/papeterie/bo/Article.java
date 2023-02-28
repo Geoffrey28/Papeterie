@@ -21,7 +21,7 @@ public abstract class Article {
 	 * @param prixUnitaire
 	 * @param qteStock
 	 */
-	public Article(int idArticle, String marque, String ref, String designation, float pu, int qte) {
+	public Article(Integer idArticle, String marque, String ref, String designation, float pu, int qte) {
 		this.idArticle = idArticle;
 		this.marque = marque;
 		this.reference = ref;
