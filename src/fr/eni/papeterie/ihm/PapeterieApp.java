@@ -18,10 +18,9 @@ public class PapeterieApp {
 
 				CatalogueController catalogue = new CatalogueController();
 				catalogue.showEcranCatalogue();
+				
 				article.ajouterCatalogueObserver(catalogue);
-			}
-			
+			}	
 		});
 	}
-
 }

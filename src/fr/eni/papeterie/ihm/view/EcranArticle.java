@@ -367,7 +367,7 @@ public class EcranArticle extends JFrame {
 		getTxtReference().setText(a.getReference());
 		getTxtMarque().setText(a.getMarque());
 		getTxtDesignation().setText(a.getDesignation());
-		getTxtPrix().setText(String.valueOf(a.getQteStock()));
+		getTxtPrix().setText(String.valueOf(a.getPrixUnitaire()));
 		getTxtStock().setText(String.valueOf(a.getQteStock()));
 		// Pour Ramette
 		if(a.getClass().equals(Ramette.class)) {

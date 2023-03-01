@@ -102,6 +102,9 @@ public class ArticleController {
 				System.out.println("article: " + articleAffiche);
 				catalogue.add(articleAffiche);
 				ecrArticle.afficherArticle(articleAffiche);
+				for (ICatalogueObserver observer : lstCatalogueObservers) {
+					observer.miseAJourDesDonnees();
+				}
 				ecrArticle.information("Nouvel article sauvegardé.");
 			} else {
 				manager.updateArticle(articleAffiche);
@@ -120,6 +123,9 @@ public class ArticleController {
 			Article art = catalogue.get(indexCatalogue);
 			manager.removeArticles(art);
 			catalogue.remove(indexCatalogue);
+			for (ICatalogueObserver observer : lstCatalogueObservers) {
+				observer.miseAJourDesDonnees();
+			}
 			ecrArticle.information("Suppression de l'article réalisée.");
 			if (indexCatalogue < catalogue.size()) {
 				// Afficher l'article suivant

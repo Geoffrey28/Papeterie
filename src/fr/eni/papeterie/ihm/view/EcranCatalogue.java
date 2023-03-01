@@ -37,8 +37,9 @@ public class EcranCatalogue extends JFrame {
         JScrollPane scrollPane = new JScrollPane(tblCatalogue);
 
         mainContent.add(scrollPane);
-	
 		this.setContentPane(mainContent);
+		
+		setVisible(true);
 	}
 	
 	public void popup(String msg, String title, int logo) {
