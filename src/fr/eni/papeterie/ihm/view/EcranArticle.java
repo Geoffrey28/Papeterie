@@ -1,4 +1,4 @@
-package fr.eni.papeterie.ihm;
+package fr.eni.papeterie.ihm.view;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -10,7 +10,6 @@ import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -25,9 +24,8 @@ import fr.eni.papeterie.bo.Article;
 import fr.eni.papeterie.bo.Ramette;
 import fr.eni.papeterie.bo.Stylo;
 
+@SuppressWarnings("serial")
 public class EcranArticle extends JFrame {
-	
-	private static final long serialVersionUID = 1L;
 	
 	private JTextField txtReference, txtDesignation, txtMarque, txtStock, txtPrix;
 	private JLabel lblReference, lblDesignation, lblMarque, lblStock, lblPrix, lblType, lblGrammage, lblCouleur;
@@ -41,7 +39,7 @@ public class EcranArticle extends JFrame {
 	private Integer indexAfficher;
 
 	public EcranArticle() {
-		this.setTitle("Article");
+		this.setTitle("Détails article");
 		this.setSize(new Dimension(500, 400));
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
@@ -463,15 +461,8 @@ public class EcranArticle extends JFrame {
 	public JButton getPreviousBtn() {
 		if(previousBtn == null) {
 			previousBtn = new JButton();
-			ImageIcon icon = new ImageIcon(this.getClass().getResource("resources/Back24.gif"));
-			previousBtn.setIcon(icon);
-			previousBtn.addActionListener(new ActionListener() {
-				
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					ArticleController.get().precedent();
-				}
-			});
+			//ImageIcon icon = new ImageIcon(this.getClass().getResource("../resources/Back24.gif"));
+			//previousBtn.setIcon(icon);
 		}
 		return previousBtn;
 	}
@@ -482,15 +473,8 @@ public class EcranArticle extends JFrame {
 	public JButton getNextBtn() {
 		if(nextBtn == null) {
 			nextBtn = new JButton();
-			ImageIcon icon = new ImageIcon(this.getClass().getResource("resources/Forward24.gif"));
-			nextBtn.setIcon(icon);
-			nextBtn.addActionListener(new ActionListener() {
-				
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					ArticleController.get().suivant();
-				}
-			});
+			//ImageIcon icon = new ImageIcon(this.getClass().getResource("../resources/Forward24.gif"));
+			//nextBtn.setIcon(icon);
 		}
 		return nextBtn;
 	}
@@ -501,15 +485,8 @@ public class EcranArticle extends JFrame {
 	public JButton getNewBtn() {
 		if(newBtn == null) {
 			newBtn = new JButton();
-			ImageIcon icon = new ImageIcon(this.getClass().getResource("resources/New24.gif"));
-			newBtn.setIcon(icon);
-			newBtn.addActionListener(new ActionListener() {
-				
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					ArticleController.get().nouveau();
-				}
-			});
+			//ImageIcon icon = new ImageIcon(this.getClass().getResource("../resources/New24.gif"));
+			//newBtn.setIcon(icon);
 		}
 		return newBtn;
 	}
@@ -520,15 +497,8 @@ public class EcranArticle extends JFrame {
 	public JButton getSaveBtn() {
 		if(saveBtn == null) {
 			saveBtn = new JButton();
-			ImageIcon icon = new ImageIcon(this.getClass().getResource("resources/Save24.gif"));
-			saveBtn.setIcon(icon);
-			saveBtn.addActionListener(new ActionListener() {
-				
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					ArticleController.get().enregistrer();
-				}
-			});
+			//ImageIcon icon = new ImageIcon(this.getClass().getResource("../resources/Save24.gif"));
+			//saveBtn.setIcon(icon);
 		}
 		return saveBtn;
 	}
@@ -539,15 +509,8 @@ public class EcranArticle extends JFrame {
 	public JButton getDeleteBtn() {
 		if(deleteBtn == null) {
 			deleteBtn = new JButton();
-			ImageIcon icon = new ImageIcon(this.getClass().getResource("resources/Delete24.gif"));
-			deleteBtn.setIcon(icon);
-			deleteBtn.addActionListener(new ActionListener() {
-				
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					ArticleController.get().supprimer();
-				}
-			});
+			//ImageIcon icon = new ImageIcon(this.getClass().getResource("../resources/Delete24.gif"));
+			//deleteBtn.setIcon(icon);
 		}
 		return deleteBtn;
 	}

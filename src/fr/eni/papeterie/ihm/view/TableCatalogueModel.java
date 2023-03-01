@@ -1,4 +1,4 @@
-package fr.eni.papeterie.ihm.ecranCatalogue;
+package fr.eni.papeterie.ihm.view;
 
 import java.util.List;
 
@@ -7,10 +7,8 @@ import javax.swing.table.AbstractTableModel;
 import fr.eni.papeterie.bo.Article;
 import fr.eni.papeterie.bo.Stylo;
 
+@SuppressWarnings("serial")
 public class TableCatalogueModel extends AbstractTableModel {
-
-	
-	private static final long serialVersionUID = 1L;
 	
 	private List<Article> catalogue;
 	
