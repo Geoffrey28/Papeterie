@@ -12,9 +12,10 @@ import fr.eni.papeterie.bo.Article;
 import fr.eni.papeterie.bo.Ramette;
 import fr.eni.papeterie.bo.Stylo;
 import fr.eni.papeterie.dal.DALException;
+import fr.eni.papeterie.dal.DAO;
 import fr.eni.papeterie.dal.ArticleDAO;
 
-public class ArticleDAOJdbcImpl implements ArticleDAO {
+public class ArticleDAOJdbcImpl implements DAO<Article> {
 	
 	private final static String TYPE_RAM = "Ramette";
 	private final static String TYPE_STL = "Stylo";
@@ -145,5 +146,15 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 			stmt.setNull(6, Types.INTEGER);
 			stmt.setString(7, stl.getCouleur());
 		}
+	}
+
+	@Override
+	public List<Article> selectByMarque(String marque) throws DALException {
+		return null;
+	}
+
+	@Override
+	public List<Article> selectByMotCle(String motCle) throws DALException {
+		return null;
 	}
 }
