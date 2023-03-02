@@ -102,14 +102,14 @@ public class ArticleController {
 				System.out.println("article: " + articleAffiche);
 				catalogue.add(articleAffiche);
 				ecrArticle.afficherArticle(articleAffiche);
-				for (ICatalogueObserver observer : lstCatalogueObservers) {
-					observer.miseAJourDesDonnees();
-				}
 				ecrArticle.information("Nouvel article sauvegardé.");
 			} else {
 				manager.updateArticle(articleAffiche);
 				catalogue.set(indexCatalogue, articleAffiche);
 				ecrArticle.information("Mise à jour effectuée.");
+			}
+			for (ICatalogueObserver observer : lstCatalogueObservers) {
+				observer.miseAJourDesDonnees();
 			}
 		} catch (BLLException e) {
 			ecrArticle.infoErreur(e.getMessage());
