@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -461,8 +462,8 @@ public class EcranArticle extends JFrame {
 	public JButton getPreviousBtn() {
 		if(previousBtn == null) {
 			previousBtn = new JButton();
-			//ImageIcon icon = new ImageIcon(this.getClass().getResource("../resources/Back24.gif"));
-			//previousBtn.setIcon(icon);
+			ImageIcon icon = new ImageIcon(this.getClass().getResource("resources/Back24.gif"));
+			previousBtn.setIcon(icon);
 		}
 		return previousBtn;
 	}
@@ -473,8 +474,8 @@ public class EcranArticle extends JFrame {
 	public JButton getNextBtn() {
 		if(nextBtn == null) {
 			nextBtn = new JButton();
-			//ImageIcon icon = new ImageIcon(this.getClass().getResource("../resources/Forward24.gif"));
-			//nextBtn.setIcon(icon);
+			ImageIcon icon = new ImageIcon(this.getClass().getResource("resources/Forward24.gif"));
+			nextBtn.setIcon(icon);
 		}
 		return nextBtn;
 	}
@@ -485,8 +486,8 @@ public class EcranArticle extends JFrame {
 	public JButton getNewBtn() {
 		if(newBtn == null) {
 			newBtn = new JButton();
-			//ImageIcon icon = new ImageIcon(this.getClass().getResource("../resources/New24.gif"));
-			//newBtn.setIcon(icon);
+			ImageIcon icon = new ImageIcon(this.getClass().getResource("resources/New24.gif"));
+			newBtn.setIcon(icon);
 		}
 		return newBtn;
 	}
@@ -497,8 +498,8 @@ public class EcranArticle extends JFrame {
 	public JButton getSaveBtn() {
 		if(saveBtn == null) {
 			saveBtn = new JButton();
-			//ImageIcon icon = new ImageIcon(this.getClass().getResource("../resources/Save24.gif"));
-			//saveBtn.setIcon(icon);
+			ImageIcon icon = new ImageIcon(this.getClass().getResource("resources/Save24.gif"));
+			saveBtn.setIcon(icon);
 		}
 		return saveBtn;
 	}
@@ -509,8 +510,8 @@ public class EcranArticle extends JFrame {
 	public JButton getDeleteBtn() {
 		if(deleteBtn == null) {
 			deleteBtn = new JButton();
-			//ImageIcon icon = new ImageIcon(this.getClass().getResource("../resources/Delete24.gif"));
-			//deleteBtn.setIcon(icon);
+			ImageIcon icon = new ImageIcon(this.getClass().getResource("resources/Delete24.gif"));
+			deleteBtn.setIcon(icon);
 		}
 		return deleteBtn;
 	}

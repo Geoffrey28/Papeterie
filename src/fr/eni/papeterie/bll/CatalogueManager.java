@@ -5,6 +5,7 @@ import java.util.List;
 import fr.eni.papeterie.bo.Article;
 import fr.eni.papeterie.bo.Ramette;
 import fr.eni.papeterie.bo.Stylo;
+import fr.eni.papeterie.dal.ArticleDAO;
 import fr.eni.papeterie.dal.DALException;
 import fr.eni.papeterie.dal.DAO;
 import fr.eni.papeterie.dal.DAOFactory;
@@ -14,6 +15,8 @@ public class CatalogueManager {
 	private static CatalogueManager instance;
 	
 	private DAO<Article> daoArticles;
+	
+	private ArticleDAO article;
 	
 	private CatalogueManager() {
 		daoArticles = DAOFactory.getArticleDAO();
@@ -106,6 +109,22 @@ public class CatalogueManager {
 		
 		if (!validate) {
 			throw new BLLException(sb.toString());
+		}
+	}
+	
+	public List<Article> sortByMarque(String marque) throws BLLException {
+		try {
+			return article.selectByMarque(marque);
+		} catch (DALException e) {
+			throw new BLLException("Echec du tri par marque", e);
+		}
+	}
+	
+	public List<Article> sortByMotCle(String motCle) throws BLLException {
+		try {
+			return article.selectByMotCle(motCle);
+		} catch (DALException e) {
+			throw new BLLException("Echec du tri par mot clé", e);
 		}
 	}
 	

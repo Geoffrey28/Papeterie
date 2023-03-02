@@ -24,16 +24,15 @@ public class EcranCatalogue extends JFrame {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
 		Toolkit tk =Toolkit.getDefaultToolkit();
-		//this.setIconImage(tk.getImage(getClass().getResource("../resources/aim.png")));	        
+		this.setIconImage(tk.getImage(getClass().getResource("resources/aim.png")));	        
 	}
 	
 	public void initComposants(List<Article> articles){
 		JPanel mainContent = new JPanel();
 		mainContent.setOpaque(true);	
-		mainContent.setLayout(new GridLayout(1, 0));
+		mainContent.setLayout(new GridLayout(1,0));
 		
 		tblCatalogue = new TableCatalogue(articles);
-
         JScrollPane scrollPane = new JScrollPane(tblCatalogue);
 
         mainContent.add(scrollPane);

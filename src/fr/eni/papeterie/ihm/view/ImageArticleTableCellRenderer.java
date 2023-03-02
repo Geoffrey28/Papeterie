@@ -14,23 +14,23 @@ public class ImageArticleTableCellRenderer implements TableCellRenderer {
 	private static ImageIcon imageRamette;
 	
 	public ImageArticleTableCellRenderer() {
-		//imageStylo = new ImageIcon(getClass().getResource("resources/pencil.gif"));
-		//imageRamette = new ImageIcon(getClass().getResource("resources/ramette.gif"));
+		imageStylo = new ImageIcon(getClass().getResource("resources/pencil.gif"));
+		imageRamette = new ImageIcon(getClass().getResource("resources/ramette.gif"));
 	}
 	
 	@Override
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 		
-		//String type = (String) value;
+		String type = (String) value;
 		
 		JLabel component = new JLabel();
 
 		
-		/*if(type.equals("R")){
+		if(type.equals("R")){
 			component.setIcon( imageRamette );	
 		}else{
 			component.setIcon(  imageStylo );
-		}*/
+		}
 		
 		component.setHorizontalAlignment(SwingConstants.CENTER);
 		
