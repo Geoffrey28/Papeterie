@@ -12,10 +12,9 @@ import fr.eni.papeterie.bo.Article;
 import fr.eni.papeterie.bo.Ramette;
 import fr.eni.papeterie.bo.Stylo;
 import fr.eni.papeterie.dal.DALException;
-import fr.eni.papeterie.dal.DAO;
 import fr.eni.papeterie.dal.ArticleDAO;
 
-public class ArticleDAOJdbcImpl implements DAO<Article> {
+public class ArticleDAOJdbcImpl implements ArticleDAO {
 	
 	private final static String TYPE_RAM = "Ramette";
 	private final static String TYPE_STL = "Stylo";
@@ -25,6 +24,11 @@ public class ArticleDAOJdbcImpl implements DAO<Article> {
 	private static final String SELECTALL = "select idArticle, reference, marque, designation, prixUnitaire, qteStock, grammage, couleur, type from articles";
 	private final static String UPDATE = "update articles set reference=?, marque=?, designation=?, prixUnitaire=?, qteStock=?,grammage=?,couleur=? where idArticle=";
 	private final static String DELETE = "delete from articles where idArticle=?";
+	private final static String SELECTBYMARQUE = "select idArticle, reference, marque, designation, prixUnitaire, qteStock, grammage, couleur, type"
+			+ " from articles where marque = ?";
+	private final static String SELECTBYMOTCLE = "select idArticle, reference, marque, designation, prixUnitaire, qteStock, grammage, couleur, type"
+			+ "from articles where marque like ? or designation like ?";
+	
 	
 	@Override
 	public void insert(Article article) throws DALException {
@@ -150,11 +154,40 @@ public class ArticleDAOJdbcImpl implements DAO<Article> {
 
 	@Override
 	public List<Article> selectByMarque(String marque) throws DALException {
-		return null;
+		List<Article> List = new ArrayList<Article>();
+		Article art = null;
+		try {
+			PreparedStatement stmt = JdbcTools.getConnection().prepareStatement(SELECTBYMARQUE);
+			stmt.setString(1, marque);
+			try (ResultSet rs = stmt.executeQuery();) {
+				while(rs.next()) {
+					art = forSelect(rs);
+					List.add(art);
+				}
+			}
+		} catch (SQLException e) {
+			throw new DALException("Select by marque failed - ", e);
+		}
+		return List;
 	}
 
 	@Override
 	public List<Article> selectByMotCle(String motCle) throws DALException {
-		return null;
+		List<Article> List = new ArrayList<Article>();
+		Article art = null;
+		try {
+			PreparedStatement stmt = JdbcTools.getConnection().prepareStatement(SELECTBYMOTCLE);
+			stmt.setString(1, motCle);
+			stmt.setString(2, motCle);
+			try (ResultSet rs = stmt.executeQuery();) {
+				while (rs.next()) {
+					art = forSelect(rs);
+					List.add(art);
+				}
+			}
+		} catch (SQLException e) {
+			throw new DALException("Select by mot clé failed - ", e);
+		}
+		return List;
 	}
 }
